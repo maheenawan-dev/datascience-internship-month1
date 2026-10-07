@@ -206,7 +206,7 @@ jupyter notebook
 BS Information Technology student, Data Science Intern at Arch Technologies
 
 - GitHub: [@maheenawan-dev](https://github.com/maheenawan-dev)
-- LinkedIn: *[add your profile link here](https://www.linkedin.com/in/maheen-irfan-332353405)*
+- LinkedIn: *(https://www.linkedin.com/in/maheen-irfan-332353405)*
 
 ---
 
