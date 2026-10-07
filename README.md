@@ -30,9 +30,9 @@ This repository contains my Month 1 work for the **Data Science Internship at Ar
 |---|---|---|
 | **Problem type** | Binary classification | Regression |
 | **Goal** | Predict whether a passenger survived | Predict the next day's closing price of AAPL |
-| **Data** | Kaggle `train.csv` (891 rows, 12 columns) | Yahoo Finance via `yfinance` (2,197 trading days, 2018 to 2026) |
-| **Models** | Logistic Regression, Random Forest | Linear Regression |
-| **Best result** | **81.0% accuracy** (Random Forest) | **R² = 0.986**, RMSE = 4.66 |
+| **Data** | Kaggle `train.csv` (891 rows, 12 columns) | Yahoo Finance via `yfinance` (2,197 trading days, 2018 to 2026; 2,196 rows used for modeling) |
+| **Models** | Logistic Regression, Random Forest | Linear Regression (compared with a naive baseline) |
+| **Best result** | **81.0% accuracy** (Random Forest) | **R² = 0.986**, RMSE = 4.66 (naive baseline: R² = 0.987, RMSE = 4.57) |
 | **Notebook** | `Task1_Titanic.ipynb` | `Task2_Stock.ipynb` |
 
 ---
@@ -95,16 +95,17 @@ Survival by sex and by passenger class shows clear patterns: women and first-cla
 **Objective:** Predict Apple's next-day closing price from the current day's Open, High, Low, Close and Volume.
 
 ### Dataset
-Historical AAPL prices from **2018-01-01 to 2026-09-30**, downloaded with the `yfinance` library (2,197 trading days).
+Historical AAPL prices from **2018-01-01 to 2026-09-30**, downloaded with the `yfinance` library (2,197 trading days). After removing the last row, which has no next-day target, **2,196 rows** were used for modeling.
 
 ### Workflow
 1. **Download** the data and inspect it with `head()` and `describe()`.
 2. **Visualize** the closing price history.
 3. **Pre-process:** create a `Target` column with the next day's close (`shift(-1)`) and drop the last row.
-4. **Time-based split:** first 80% of dates for training, last 20% for testing. The data is **not shuffled**, to avoid leaking future information into training.
+4. **Time-based split:** first 80% of dates for training (1,756 rows), last 20% for testing (440 rows). The data is **not shuffled**, to avoid leaking future information into training.
 5. **Train** a Linear Regression model.
 6. **Evaluate** with MAE, RMSE and R².
-7. **Plot** actual vs predicted prices on the test period.
+7. **Compare with a naive baseline** that predicts tomorrow's close as today's close.
+8. **Plot** actual vs predicted prices on the test period.
 
 ### AAPL Closing Price History
 
@@ -112,18 +113,18 @@ Historical AAPL prices from **2018-01-01 to 2026-09-30**, downloaded with the `y
 
 ### Results
 
-| Metric | Value |
-|---|---|
-| MAE | 3.21 |
-| RMSE | 4.66 |
-| R² | 0.986 |
+| Metric | Linear Regression | Naive baseline |
+|---|---|---|
+| MAE | 3.21 | 3.14 |
+| RMSE | 4.66 | 4.57 |
+| R² | 0.986 | 0.987 |
 
 ### Actual vs Predicted
 
 ![Actual vs Predicted](images/actual_vs_predicted.png)
 
 ### Important Note on These Results
-The high R² should be read with care. Stock prices change slowly from one day to the next, so a model that uses today's close will naturally land close to tomorrow's close. In the plot, the predicted line largely lags the actual line by about one day. Stock prices are also noisy and driven by news and market events that this model cannot see. **This project is for learning purposes and is not financial advice or a trading strategy.**
+The high R² should be read with care. Stock prices change slowly from one day to the next, so a model that uses today's close will naturally land close to tomorrow's close. A naive baseline that simply repeats today's close scores slightly better than the model (see Results), which shows that the model mostly repeats the previous price. Stock prices are also noisy and driven by news and market events that this model cannot see. **This project is for learning purposes and is not financial advice or a trading strategy.**
 
 ---
 
@@ -146,6 +147,9 @@ datascience-internship-month1/
 ├── Task1_Titanic.ipynb     # Titanic survival classification
 ├── Task2_Stock.ipynb       # AAPL stock price prediction
 ├── train.csv               # Titanic dataset (from Kaggle)
+├── AAPL_2018_2026.csv      # AAPL data snapshot used in Task 2
+├── requirements.txt        # Python libraries needed to run locally
+├── LICENSE                 # MIT license
 ├── images/                 # Result screenshots used in this README
 │   ├── eda_charts.png
 │   ├── rf_confusion_matrix.png
@@ -163,8 +167,9 @@ datascience-internship-month1/
 1. Open [Google Colab](https://colab.research.google.com) and choose **File → Upload notebook**.
 2. Upload `Task1_Titanic.ipynb` or `Task2_Stock.ipynb` from this repository.
 3. For **Task 1**, upload `train.csv` using the Files panel on the left.
-4. > **Note:** The Task 2 results in this repository were produced from a data snapshot downloaded on 7 October 2026 (`AAPL_2018_2026.csv`). Re-running the notebook downloads fresh data from Yahoo Finance, so the numbers may differ slightly.
-5. Run all cells with **Runtime → Run all**.
+4. Run all cells with **Runtime → Run all**.
+
+> **Note:** The Task 2 results in this repository were produced from a data snapshot downloaded on 7 October 2026 (`AAPL_2018_2026.csv`, 2,196 rows including the `Target` column). Re-running the notebook downloads fresh data from Yahoo Finance, so the numbers may differ slightly.
 
 ### Option 2: Run locally
 ```bash
@@ -173,7 +178,7 @@ git clone https://github.com/maheenawan-dev/datascience-internship-month1.git
 cd datascience-internship-month1
 
 # 2. Install the required libraries
-pip install pandas numpy matplotlib seaborn scikit-learn yfinance jupyter
+pip install -r requirements.txt
 
 # 3. Start Jupyter and open a notebook
 jupyter notebook
@@ -189,14 +194,14 @@ jupyter notebook
 - Encoding categorical variables for machine learning models.
 - Choosing the right split: random and stratified for classification, time-based for time series.
 - Comparing models and reading precision, recall, F1 and confusion matrices instead of accuracy alone.
-- Understanding that a high score (such as R² = 0.986) does not always mean a useful model.
+- Always comparing a model with a simple baseline: a high score (such as R² = 0.986) does not always mean a useful model.
 
 ---
 
 ## Limitations and Future Work
 
 - **Titanic:** add engineered features (title from `Name`, family size), tune hyperparameters and use cross-validation.
-- **Stock prediction:** add technical indicators (moving averages, RSI), test on other stocks and try an LSTM neural network.
+- **Stock prediction:** the model did not beat the naive baseline. Possible next steps are adding technical indicators (moving averages, RSI), predicting returns instead of prices, testing on other stocks and trying an LSTM neural network.
 - Both projects use a single train/test split; k-fold or walk-forward validation would give more reliable estimates.
 
 ---
@@ -206,8 +211,8 @@ jupyter notebook
 **Maheen Irfan**
 BS Information Technology student, Data Science Intern at Arch Technologies
 
-- GitHub: [@Maheen Irfan](https://github.com/maheenawan-dev)
-- LinkedIn: *[Maheen Irfan](https://www.linkedin.com/in/maheen-irfan-332353405)*
+- GitHub: [@maheenawan-dev](https://github.com/maheenawan-dev)
+- LinkedIn: [Maheen Irfan](https://www.linkedin.com/in/maheen-irfan-332353405)
 
 ---
 
