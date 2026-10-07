@@ -57,6 +57,12 @@ The `train.csv` file from the Kaggle competition [Titanic: Machine Learning from
 7. **Evaluate** using accuracy, classification report and confusion matrix.
 8. **Interpret** the Random Forest with feature importance.
 
+### Exploratory Data Analysis
+
+![EDA Charts](images/eda_charts.png)
+
+Survival by sex and by passenger class shows clear patterns: women and first-class passengers survived far more often.
+
 ### Results
 
 | Model | Accuracy |
@@ -70,6 +76,12 @@ The `train.csv` file from the Kaggle competition [Titanic: Machine Learning from
 |---|---|---|
 | **Actual: Died** | 96 | 14 |
 | **Actual: Survived** | 20 | 49 |
+
+![Random Forest Confusion Matrix](images/rf_confusion_matrix.png)
+
+### Feature Importance
+
+![Feature Importance](images/feature_importance.png)
 
 ### Key Findings
 - Women and first-class passengers survived at much higher rates.
@@ -94,6 +106,10 @@ Historical AAPL prices from **2018-01-01 to 2026-09-30**, downloaded with the `y
 6. **Evaluate** with MAE, RMSE and R².
 7. **Plot** actual vs predicted prices on the test period.
 
+### AAPL Closing Price History
+
+![AAPL Closing Price](images/stock_closing_price.png)
+
 ### Results
 
 | Metric | Value |
@@ -101,6 +117,10 @@ Historical AAPL prices from **2018-01-01 to 2026-09-30**, downloaded with the `y
 | MAE | 3.21 |
 | RMSE | 4.66 |
 | R² | 0.986 |
+
+### Actual vs Predicted
+
+![Actual vs Predicted](images/actual_vs_predicted.png)
 
 ### Important Note on These Results
 The high R² should be read with care. Stock prices change slowly from one day to the next, so a model that uses today's close will naturally land close to tomorrow's close. In the plot, the predicted line largely lags the actual line by about one day. Stock prices are also noisy and driven by news and market events that this model cannot see. **This project is for learning purposes and is not financial advice or a trading strategy.**
@@ -126,6 +146,12 @@ datascience-internship-month1/
 ├── Task1_Titanic.ipynb     # Titanic survival classification
 ├── Task2_Stock.ipynb       # AAPL stock price prediction
 ├── train.csv               # Titanic dataset (from Kaggle)
+├── images/                 # Result screenshots used in this README
+│   ├── eda_charts.png
+│   ├── rf_confusion_matrix.png
+│   ├── feature_importance.png
+│   ├── stock_closing_price.png
+│   └── actual_vs_predicted.png
 └── README.md               # Project documentation
 ```
 
@@ -180,7 +206,7 @@ jupyter notebook
 BS Information Technology student, Data Science Intern at Arch Technologies
 
 - GitHub: [@maheenawan-dev](https://github.com/maheenawan-dev)
-- LinkedIn: *add your profile link here*
+- LinkedIn: *[add your profile link here](https://www.linkedin.com/in/maheen-irfan-332353405)*
 
 ---
 
