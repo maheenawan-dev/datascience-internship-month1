@@ -163,7 +163,8 @@ datascience-internship-month1/
 1. Open [Google Colab](https://colab.research.google.com) and choose **File → Upload notebook**.
 2. Upload `Task1_Titanic.ipynb` or `Task2_Stock.ipynb` from this repository.
 3. For **Task 1**, upload `train.csv` using the Files panel on the left.
-4. Run all cells with **Runtime → Run all**.
+4. > **Note:** The Task 2 results in this repository were produced from a data snapshot downloaded on 7 October 2026 (`AAPL_2018_2026.csv`). Re-running the notebook downloads fresh data from Yahoo Finance, so the numbers may differ slightly.
+5. Run all cells with **Runtime → Run all**.
 
 ### Option 2: Run locally
 ```bash
